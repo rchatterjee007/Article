@@ -19,14 +19,15 @@ public class Articles {
 	public static void main(String[] args) {
 
 		// TODO Auto-generated method stub
-		int gainTotal=0;
-		Scanner clavier= new Scanner(System.in);
+		int gainTotal=0;//GAIN TOTALE DU JOUEUR
 		String status="";
+		Scanner clavier= new Scanner(System.in);
 
+		boolean continuer=true;
 		String nomUtilisateur="";
 		//PREMIER MENU 
 		System.out.println("******************************************");
-		System.out.println(OPTION1);
+		System.out.println();
 		System.out.println("* Bienvenue dans le jeu :");
 		System.out.println();
 
@@ -42,7 +43,32 @@ public class Articles {
 		System.out.println();
 
 		//TANT QUE LE JOUEUR VEUT JOUER
-		while(status!="N"||status!="n"){
+
+		while(continuer==true) {
+
+
+			//QUAND LA PARTI EST TERMINE, ON DEMANDE A L'UTILISATEUR SI IL VEUT CONTINUER
+			if(status.equals("termine")) {
+				System.out.println("Voulez-vous continuer ? (n)on ou (N)on pour quitter : N");
+				status=clavier.next();
+				if(status.equals("n")||status.equals("N")) {
+					if(gainTotal==GAINPARPARTIE) {
+						System.out.println("« Très bien, à votre place, j’aurais continué » Gain total=+"+gainTotal+"$");
+						System.out.println("Au revoir "+nomUtilisateur);
+					}
+					if(gainTotal>GAINPARPARTIE) {
+						System.out.println("« Bravo champion » Gain total=+"+gainTotal+"$\"");
+						System.out.println("Au revoir "+nomUtilisateur);
+					}
+					if(gainTotal==0) {
+						System.out.println("« Dommage, une autre fois »");
+						System.out.println("Au revoir "+nomUtilisateur);
+					}
+					continuer=false;
+					break;
+				}
+			}
+
 
 			int choixUtilisateur=0;
 			//DEUXIEME MENU
@@ -73,9 +99,11 @@ public class Articles {
 				choixUtilisateur=clavier.nextInt();
 			}
 
-			int prixMin=1;
+			int prixMin=1;//RIEN EST GRATUIT
 			int prixMax=0;
 			int prixEstimationUtilisateur=0;
+
+			//MONTRER LES PRIX POUR CHAQUE ITEM 
 			switch (choixUtilisateur) {
 			case 1:
 				prixMax=10;
@@ -110,63 +138,44 @@ public class Articles {
 				System.out.println("");
 			}
 
-			int prixAleatoire=(int) Math.round(Math.random()* (prixMax - prixMin) + prixMin);// NUMERO ENTRE MIN ET MAX INCLUSIVEMENT
+			//NUMERO ALEATOIRE ENTRE MIN ET MAX INCLUSIVEMENT
+			int prixAleatoire=(int) Math.round(Math.random()* (prixMax - prixMin) + prixMin);
 
-			System.out.println(prixAleatoire);
-			int nbrEssay=0;
+			//INITIALISER LE NBR DE TENTATIVES AUTORISE
+			int nbrTentative=0;
 
-			while(prixEstimationUtilisateur!=prixAleatoire&&nbrEssay<NBRFINALESSAIE) {
-				System.out.println("Entrez votre prix :");
-				prixEstimationUtilisateur=clavier.nextInt();
-				nbrEssay++;
-				if(prixEstimationUtilisateur>prixAleatoire) {
-					nbrEssay++;
+			//INITIALISER LE PRIX QUE DEVINE LE JOUEUR
+			int prixJoueur=0;
+
+			System.out.println("Entrez votre prix : ");
+
+
+			//TANT QUE LE JOUR NE DEPASSE PAS LE NOMBRE DE TENTATIVES ET QUE LE PRIX PAS TROUVE
+			while(prixJoueur!=prixAleatoire&&nbrTentative<NBRFINALESSAIE) {
+				prixJoueur=clavier.nextInt();
+				if(prixJoueur>prixAleatoire) {
 					System.out.println("Moins");
-					prixEstimationUtilisateur=clavier.nextInt();
 				}
-				if(prixEstimationUtilisateur<prixAleatoire) {
-					nbrEssay++;
+				if(prixJoueur<prixAleatoire) {
 					System.out.println("Plus");
-					prixEstimationUtilisateur=clavier.nextInt();
 				}
-			}	
-
-
-			if(nbrEssay>=NBRFINALESSAIE) {
-				System.out.println("VOUS AVEZ DÉPASSÉ LE NOMBRE TOTAL DE TENTATIVE!");
-				status="N";
+				nbrTentative++;
 			}
+
+			//SI IL A DEPASE LES TENTATIVES, ON RECOMMENCE UNE PARTIE
+			if(NBRFINALESSAIE<=nbrTentative) {
+				continuer=true;
+			}
+
+			//SINON, IL GAGNE SES POINTS ET ON MONTRE LE SCORE
 			else {
 				gainTotal+=100;
-				System.out.println("Bravo, « "+nomUtilisateur+" », vous avez gagné "+GAINPARPARTIE+"$ au bout de "+nbrEssay+" essais.");
-				System.out.println();		
+				System.out.println("Bravo, « "+nomUtilisateur+" », vous avez gagné "+GAINPARPARTIE+"$ au bout de "+nbrTentative+" essais.");
+				System.out.println();
+				//TERMINE POUR INDIQUER QUE CETTE PARTIE EST TERMINE
+				status="termine";
 			}
-			System.out.println("Voulez-vous continuer ? (n)on ou (N)on pour quitter :");
-			String statusJeuCourant=clavier.nextLine();
-			System.out.println();
-			
 		}
-
-
-
-
 	}
 
 }
-
-
-/*if(statusJeuCourant.equals("n")||statusJeuCourant.equals("N")) {
-				if(gainTotal==GAINPARPARTIE) {
-					System.out.println("« Très bien, à votre place, j’aurais continué » Gain total=+"+gainTotal+"$");
-					System.out.println("Au revoir "+nomUtilisateur);
-				}
-				if(gainTotal>GAINPARPARTIE) {
-					System.out.println("« Bravo champion » Gain total=+"+gainTotal+"$\"");
-					System.out.println("Au revoir "+nomUtilisateur);
-				}
-				if(gainTotal==0) {
-					System.out.println("« Dommage, une autre fois »");
-					System.out.println("Au revoir "+nomUtilisateur);
-				}
-			}
- * */
