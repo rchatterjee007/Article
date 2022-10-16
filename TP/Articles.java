@@ -153,6 +153,11 @@ public class Articles {
 			//TANT QUE LE JOUR NE DEPASSE PAS LE NOMBRE DE TENTATIVES ET QUE LE PRIX PAS TROUVE
 			while(prixJoueur!=prixAleatoire&&nbrTentative<NBRFINALESSAIE) {
 				prixJoueur=clavier.nextInt();
+				while(prixJoueur<prixMin||prixJoueur>prixMax) {
+					System.out.println("Désolé, vous n’avez pas respecté l’intervalle de prix accepté!");
+					System.out.println("Entrez votre prix entre "+prixMin+" et "+prixMax+"$");
+					prixJoueur=clavier.nextInt();
+				}
 				if(prixJoueur>prixAleatoire) {
 					System.out.println("Moins");
 				}
