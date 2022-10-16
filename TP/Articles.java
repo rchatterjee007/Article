@@ -164,6 +164,7 @@ public class Articles {
 
 			//SI IL A DEPASE LES TENTATIVES, ON RECOMMENCE UNE PARTIE
 			if(NBRFINALESSAIE<=nbrTentative) {
+				System.out.println("VOUS AVEZ DÉPPASÉ LE NOMBRE DE TENTATIVES");
 				continuer=true;
 			}
 
